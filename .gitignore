@@ -1,0 +1,16 @@
+# Godot
+.godot/
+*.import
+export.cfg
+export_presets.cfg
+
+# Mono / C# (not used, but just in case)
+.mono/
+data_*/
+
+# macOS
+.DS_Store
+
+# Editor metadata
+.vscode/
+.idea/
