@@ -36,21 +36,23 @@
 ---
 
 ## Milestone 3 — Click & Match
-- [ ] `Tile.gd` — handle `_input_event`, emit `tile_clicked(self)` signal
-- [ ] `Board.gd` — selection state machine (IDLE → SELECT_FIRST → match/deselect)
-- [ ] Highlight selected tile (yellow modulate)
-- [ ] On match: tween scale to 0 → `queue_free()`, remove from grid dict
-- [ ] On mismatch: swap selection to new tile
+- [x] `Tile.gd` — handle `_input_event`, emit `tile_clicked(self)` signal
+- [x] `Board.gd` — selection state machine (IDLE → SELECT_FIRST → match/deselect)
+- [x] Highlight selected tile (yellow modulate)
+- [x] On match: tween scale to 0 → `queue_free()`, remove from grid dict
+- [x] On mismatch: swap selection to new tile
+
+> ✅ Implemented inside `Board.gd` + `Tile.gd` during M2.
 
 **✅ Test:** Click two matching free tiles — they disappear. Click a blocked tile — nothing happens. Click two non-matching free tiles — second becomes selected.
 
 ---
 
 ## Milestone 4 — Game Loop
-- [ ] `GameLogic.check_victory()` called after every match
-- [ ] Win overlay (`GameOver.tscn`) shown when all tiles cleared
-- [ ] Fail overlay shown when no pairs remain
-- [ ] Score increments +100 per match (via `GameState`)
+- [x] `GameLogic.check_victory()` called after every match (done in `Board.gd`)
+- [x] Win overlay (`GameOver.tscn`) shown when all tiles cleared
+- [x] Fail overlay shown when no pairs remain
+- [x] Score increments +100 per match (done via `GameState`)
 
 **✅ Test:** Manually remove all pairs (or use hint spam) → Win screen appears. Force a no-match state → Fail screen appears.
 

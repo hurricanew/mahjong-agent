@@ -49,6 +49,7 @@ The board is represented as a 3D Coordinate Grid **(x, y, z)** to facilitate log
 ### A. Selection & Matching Engine
 * **`is_tile_free(target_tile)`**: A query function that checks adjacent indices in the 3D grid to validate selection.
 * **`check_victory_condition()`**: Scans remaining tiles to determine if any valid matches are available.
+* **`generate_solvable_deal(positions)`**: Every game must be generated using a reverse-construction algorithm that guarantees the board is completable. Randomly assigning tile types to positions is **not acceptable** — the deal must be built by finding a valid removal sequence first, then assigning types. This applies to both the initial deal and any mid-game shuffle.
 
 ### B. Visual Interaction
 * **Z-Sorting:** Automate Y-sorting and Z-index assignment based on the $(x, y, z)$ coordinates to ensure correct sprite overlapping.

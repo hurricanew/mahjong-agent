@@ -8,6 +8,11 @@ extends Node
 ##   [TEST] victory:WIN: PASS
 ##   [TEST] victory:FAIL: PASS
 ##   [TEST] victory:CONTINUE: PASS
+##   [TEST] flower_wildcard: PASS
+##   [TEST] season_wildcard: PASS
+##   [TEST] top_block: PASS
+##   [TEST] layout_count: PASS
+##   [TEST] pool_count: PASS
 ##   [TEST] shuffle: PASS
 ##   ✅ M1 PASS — all logic tests passed!
 
@@ -28,7 +33,7 @@ func _ready() -> void:
 	# ── Build a minimal test grid ────────────────────────────────────────
 	# Lay out a tiny 3-tile scenario manually:
 	#
-	#  Layer 0:  [A at (0,0,0)]  [B at (2,0,0)]  [C at (4,0,0)]
+	#  Layer 0:  [A at (0,0,0)]  [B at (0,1,0)]  [C at (0,2,0)]
 	#
 	# A is free (left edge, right neighbor B)  → left open
 	# B is blocked (A on left, C on right)     → neither side open
@@ -38,18 +43,18 @@ func _ready() -> void:
 	var tile_types: Dictionary = {}
 
 	grid[Vector3i(0, 0, 0)] = true
-	grid[Vector3i(2, 0, 0)] = true
-	grid[Vector3i(4, 0, 0)] = true
+	grid[Vector3i(0, 1, 0)] = true
+	grid[Vector3i(0, 2, 0)] = true
 
 	# All same type so they match
 	tile_types[Vector3i(0, 0, 0)] = TileTypes.Type.BAMBOO_1
-	tile_types[Vector3i(2, 0, 0)] = TileTypes.Type.BAMBOO_1
-	tile_types[Vector3i(4, 0, 0)] = TileTypes.Type.BAMBOO_1
+	tile_types[Vector3i(0, 1, 0)] = TileTypes.Type.BAMBOO_1
+	tile_types[Vector3i(0, 2, 0)] = TileTypes.Type.BAMBOO_1
 
 	# ── Test: is_tile_free ──────────────────────────────────────────────
 	var a_free := GameLogic.is_tile_free(Vector3i(0, 0, 0), grid)  # leftmost → free
-	var b_free := GameLogic.is_tile_free(Vector3i(2, 0, 0), grid)  # middle → blocked
-	var c_free := GameLogic.is_tile_free(Vector3i(4, 0, 0), grid)  # rightmost → free
+	var b_free := GameLogic.is_tile_free(Vector3i(0, 1, 0), grid)  # middle → blocked
+	var c_free := GameLogic.is_tile_free(Vector3i(0, 2, 0), grid)  # rightmost → free
 	assert_true.call(a_free and not b_free and c_free, "is_free")
 
 	# ── Test: find_matches ─────────────────────────────────────────────
@@ -67,9 +72,9 @@ func _ready() -> void:
 	var fail_grid: Dictionary = {}
 	var fail_types: Dictionary = {}
 	fail_grid[Vector3i(0, 0, 0)] = true
-	fail_grid[Vector3i(2, 0, 0)] = true
+	fail_grid[Vector3i(0, 1, 0)] = true
 	fail_types[Vector3i(0, 0, 0)] = TileTypes.Type.BAMBOO_1
-	fail_types[Vector3i(2, 0, 0)] = TileTypes.Type.CHAR_1
+	fail_types[Vector3i(0, 1, 0)] = TileTypes.Type.CHAR_1
 	assert_true.call(GameLogic.check_victory(fail_grid, fail_types) == "FAIL", "victory:FAIL")
 
 	# ── Test: check_victory CONTINUE ──────────────────────────────────
@@ -80,9 +85,9 @@ func _ready() -> void:
 	var flower_grid: Dictionary = {}
 	var flower_types: Dictionary = {}
 	flower_grid[Vector3i(0, 0, 0)] = true
-	flower_grid[Vector3i(2, 0, 0)] = true
+	flower_grid[Vector3i(0, 1, 0)] = true
 	flower_types[Vector3i(0, 0, 0)] = TileTypes.Type.FLOWER_PLUM
-	flower_types[Vector3i(2, 0, 0)] = TileTypes.Type.FLOWER_ORCHID
+	flower_types[Vector3i(0, 1, 0)] = TileTypes.Type.FLOWER_ORCHID
 	var flower_pairs := GameLogic.find_matches(flower_grid, flower_types)
 	assert_true.call(flower_pairs.size() == 1, "flower_wildcard")
 
@@ -90,9 +95,9 @@ func _ready() -> void:
 	var season_grid: Dictionary = {}
 	var season_types: Dictionary = {}
 	season_grid[Vector3i(0, 0, 0)] = true
-	season_grid[Vector3i(2, 0, 0)] = true
+	season_grid[Vector3i(0, 1, 0)] = true
 	season_types[Vector3i(0, 0, 0)] = TileTypes.Type.SEASON_SPRING
-	season_types[Vector3i(2, 0, 0)] = TileTypes.Type.SEASON_AUTUMN
+	season_types[Vector3i(0, 1, 0)] = TileTypes.Type.SEASON_AUTUMN
 	var season_pairs := GameLogic.find_matches(season_grid, season_types)
 	assert_true.call(season_pairs.size() == 1, "season_wildcard")
 
@@ -125,4 +130,4 @@ func _ready() -> void:
 		push_error("❌ M1 FAIL — %d/%d tests failed." % [failed, passed + failed])
 
 	# Auto-quit so you can run it from the CLI too
-	# get_tree().quit()  # Uncomment if running headlessly via CLI
+	get_tree().quit()

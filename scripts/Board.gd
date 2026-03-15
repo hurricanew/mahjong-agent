@@ -36,14 +36,15 @@ func _ready() -> void:
 func _spawn_tiles() -> void:
 	var positions: Array = TileLayout.get_positions()
 
-	# Build and shuffle a 144-tile type pool
-	var pool: Array = TileTypes.build_tile_pool()
-	pool.shuffle()
+	# Generate a guaranteed-solvable deal: every game can be completed.
+	# generate_solvable_deal builds a valid removal sequence in reverse,
+	# then assigns tile types to position-pairs along that sequence.
+	var solvable_types: Dictionary = {}
+	GameLogic.generate_solvable_deal(positions, solvable_types)
 
 	# Instantiate one Tile per position
-	for i in range(positions.size()):
-		var gpos: Vector3i = positions[i]
-		var t_type: int    = pool[i]
+	for gpos: Vector3i in positions:
+		var t_type: int = solvable_types.get(gpos, 0)
 
 		var tile: Node2D = TILE_SCENE.instantiate()
 		add_child(tile)
